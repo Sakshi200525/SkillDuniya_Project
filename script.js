@@ -5,7 +5,6 @@ const nameInput = document.getElementById("name");
 const emailInput = document.getElementById("email");
 const userIdInput = document.getElementById("userId");
 
-// Custom names + emails
 const customNames = ["sakshi", "sagar", "tanika"];
 const customEmails = [
   "sakshi@gmail.com",
@@ -13,17 +12,14 @@ const customEmails = [
   "tanika123@gmail.com"
 ];
 
-// Keep local users for updates
 let localUsers = [];
 
-// ----------- READ (Fetch users) -----------
 async function loadUsers() {
   userList.innerHTML = "<p>Loading...</p>";
   try {
     const res = await fetch(API_URL);
     const users = await res.json();
 
-    // Replace API names & emails with custom ones
     localUsers = users.slice(0, customNames.length).map((user, i) => ({
       ...user,
       name: customNames[i],
@@ -36,7 +32,6 @@ async function loadUsers() {
   }
 }
 
-// ----------- RENDER USERS -----------
 function renderUsers() {
   userList.innerHTML = "";
   localUsers.forEach((user) => {
@@ -53,7 +48,6 @@ function renderUsers() {
   });
 }
 
-// ----------- CREATE & UPDATE -----------
 form.addEventListener("submit", (e) => {
   e.preventDefault();
   const id = userIdInput.value;
@@ -64,13 +58,11 @@ form.addEventListener("submit", (e) => {
   };
 
   if (id) {
-    // UPDATE local array
     localUsers = localUsers.map((u) =>
       u.id === parseInt(id) ? userData : u
     );
     alert("User updated!");
   } else {
-    // CREATE new user
     localUsers.push(userData);
     alert("User added!");
   }
@@ -80,7 +72,7 @@ form.addEventListener("submit", (e) => {
   renderUsers();
 });
 
-// ----------- Fill form for Update -----------
+
 function editUser(id) {
   const user = localUsers.find((u) => u.id === id);
   if (user) {
@@ -89,8 +81,6 @@ function editUser(id) {
     emailInput.value = user.email;
   }
 }
-
-// ----------- DELETE -----------
 function deleteUser(id) {
   if (confirm("Are you sure you want to delete this user?")) {
     localUsers = localUsers.filter((u) => u.id !== id);
@@ -99,5 +89,5 @@ function deleteUser(id) {
   }
 }
 
-// Initial load
 loadUsers();
+
